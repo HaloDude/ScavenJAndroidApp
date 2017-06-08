@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1030615781111",
+    "project_id": "firebase-scavenj"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030615781111:android:72653042ef8456e0",
+        "android_client_info": {
+          "package_name": "com.pigeonstudios.scavenj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030615781111-j0ojjekom7mv1l2qe02711g7m2h7pola.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pigeonstudios.scavenj",
+            "certificate_hash": "244eb7d5146c900fc159a266c085ee8f353055f6"
+          }
+        },
+        {
+          "client_id": "1030615781111-cimbm5d7mclmtvrd11e78do8cdqhqfc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuXQPX-L7msn6hUYGWRqicBF2mLb9cliU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
