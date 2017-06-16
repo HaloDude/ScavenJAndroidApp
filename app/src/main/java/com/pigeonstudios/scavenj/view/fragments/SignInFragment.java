@@ -1,6 +1,7 @@
 package com.pigeonstudios.scavenj.view.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,6 +55,8 @@ public class SignInFragment extends Fragment implements GoogleApiClient.Connecti
     //a flag to tell if the user is signed in. Default is false
     private boolean isSignedIn = false;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -87,6 +90,12 @@ public class SignInFragment extends Fragment implements GoogleApiClient.Connecti
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mProgressDialog == null) {
+                    mProgressDialog = new ProgressDialog(mContext);
+                    mProgressDialog.setMessage("Loading");
+                    mProgressDialog.setIndeterminate(true);
+                }
+                mProgressDialog.show();
                 signIn();
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
                 sp.edit().putBoolean("isSignedIn", isSignedIn);
@@ -147,14 +156,15 @@ public class SignInFragment extends Fragment implements GoogleApiClient.Connecti
             //get email
             tv = (TextView)view.findViewById(R.id.currentEmail);
             tv.setText(acct.getEmail());
-
             isSignedIn = true;
-
         } else {
             // Signed out, show unauthenticated UI.
             isSignedIn = false;
-
         }
+        if(mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+
     }
     // [END handleSignInResult]
 

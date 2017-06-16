@@ -124,10 +124,11 @@ public class SignInActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-
+            mProgressDialog.dismiss();
             Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(mainActivityIntent);
+            this.finish();
 
         } else {
             // Signed out, show unauthenticated UI.
@@ -189,7 +190,7 @@ public class SignInActivity extends AppCompatActivity implements
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            //mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setMessage("Loading");
             mProgressDialog.setIndeterminate(true);
         }
 
@@ -218,6 +219,7 @@ public class SignInActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                showProgressDialog();
                 signIn();
                 break;
             case R.id.sign_out_button:
