@@ -2,17 +2,20 @@ package com.pigeonstudios.scavenj.controller;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pigeonstudios.scavenj.R;
 import com.pigeonstudios.scavenj.model.ScavenJCard;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by Dennis on 6/17/2017.
@@ -51,10 +54,19 @@ public class AvailableScavenJAdapter extends RecyclerView.Adapter<AvailableScave
     }
 
     @Override
-    public void onBindViewHolder(ScavenJViewHolder holder, int position) {
+    public void onBindViewHolder(final ScavenJViewHolder holder, final int position) {
         holder.name.setText(cards.get(position).getName());
         holder.description.setText(cards.get(position).getDescription());
         holder.photo.setImageResource(cards.get(position).getImgId());
+
+        //touch controller for every card
+        //TODO implement the touch stuff
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(position));
+            }
+        });
     }
 
     @Override
