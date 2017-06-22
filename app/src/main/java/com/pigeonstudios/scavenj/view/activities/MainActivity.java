@@ -1,22 +1,22 @@
 package com.pigeonstudios.scavenj.view.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
 import com.pigeonstudios.scavenj.R;
-import com.pigeonstudios.scavenj.controller.AvailableScavenJAdapter;
+import com.pigeonstudios.scavenj.controller.recyclerviewcontroller.AvailableScavenJAdapter;
+import com.pigeonstudios.scavenj.controller.recyclerviewcontroller.OnLoadMoreListener;
 import com.pigeonstudios.scavenj.model.ScavenJCard;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
 
         //================================Recycler View=========================================//
         //get recycler view that will have cards for the scavenger hunts that are available
-        recyclerView = (RecyclerView)findViewById(R.id.availableScavenJ);
+        recyclerView = (RecyclerView)findViewById(R.id.scavenJRecyclerView);
         //because recycler view will have fixed size, do this to increase performance
         recyclerView.setHasFixedSize(true);
 
@@ -56,15 +56,46 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //temp list of cards
-        List<ScavenJCard> cards = new ArrayList<>();
+        final List<ScavenJCard> cards = new ArrayList<>();
         cards.add(new ScavenJCard("Name", "Bla bla bla", R.drawable.ic_menu_gallery));
         cards.add(new ScavenJCard("Name", "Bla bla bla", R.drawable.ic_menu_gallery));
         cards.add(new ScavenJCard("Name", "Bla bla bla", R.drawable.ic_menu_gallery));
         cards.add(new ScavenJCard("Name", "Bla bla bla", R.drawable.ic_menu_gallery));
 
 
-        AvailableScavenJAdapter adapter = new AvailableScavenJAdapter(cards);
+        final AvailableScavenJAdapter adapter = new AvailableScavenJAdapter(cards, recyclerView, this);
         recyclerView.setAdapter(adapter);
+
+        //set load more listener
+        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if(cards.size() <= 20){
+                    cards.add(null);
+                    adapter.notifyItemInserted(cards.size() - 1); //insert the loading bar
+                    new Handler().postDelayed(new Runnable(){
+                        @Override
+                        public void run() {
+                            //remove loading bar
+                            cards.remove(cards.size() - 1);
+                            adapter.notifyItemRemoved(cards.size());
+
+                            //generate more data here
+                            int index = cards.size();
+                            int end = index + 5;
+                            for (int i = index; i < end; i++) {
+                                cards.add(new ScavenJCard("Name" + String.valueOf(i), "Desccccc", R.drawable.ic_menu_gallery));
+                            }
+
+                            adapter.notifyDataSetChanged();
+                            adapter.setLoaded();
+                        }
+                    }, 3000);
+                } else {
+                    Toast.makeText(MainActivity.this, "No more data to load", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
 
