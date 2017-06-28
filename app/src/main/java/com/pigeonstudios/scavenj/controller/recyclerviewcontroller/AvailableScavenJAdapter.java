@@ -1,6 +1,8 @@
 package com.pigeonstudios.scavenj.controller.recyclerviewcontroller;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import com.pigeonstudios.scavenj.R;
 import com.pigeonstudios.scavenj.model.ScavenJCard;
+import com.pigeonstudios.scavenj.view.activities.ScavenJAssignmentHolder;
 
 import java.util.List;
 
@@ -126,7 +129,10 @@ public class AvailableScavenJAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onClick(View v) {
                 Log.d("Click", String.valueOf(position));
-
+                Intent intent = new Intent(activity, ScavenJAssignmentHolder.class);
+                intent.putExtra("ID", position);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.slide_in, R.anim.hold);
             }
         });
     }
