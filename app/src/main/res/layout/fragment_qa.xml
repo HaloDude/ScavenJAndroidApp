@@ -1,28 +1,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/QAFragment"
     android:layout_width="match_parent"
-    android:layout_height="411dp"
-    tools:context="com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/QAFragment">
+    tools:context="com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Question"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="30sp"
+                android:layout_marginTop="20dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.26" />
+
+            <TextView
+                android:id="@+id/QAQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="114dp"
+                android:maxHeight="120dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:text="Qestion Placeholderasfffffffffffffffffffffffffffffffffffffff"
+                android:layout_weight="0.03" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:srcCompat="@drawable/text_frame"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:orientation="horizontal"
+        android:layout_weight="0">
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Enter answer here"
+            android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:layout_weight="0.12" />
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/submit_answer_button" />
+
+    </LinearLayout>
+
 </LinearLayout>

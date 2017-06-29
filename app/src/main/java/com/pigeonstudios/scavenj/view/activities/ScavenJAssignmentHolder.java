@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import com.pigeonstudios.scavenj.R;
@@ -49,7 +50,7 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
         ft.commit();
 
         //get next button to switch to next fragment
-        Button next = (Button)findViewById(R.id.next_assignment);
+        ImageButton next = (ImageButton)findViewById(R.id.next_assignment);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +73,7 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
             }
         });
 
-        Button prev = (Button)findViewById(R.id.previous_assignment);
+        ImageButton prev = (ImageButton)findViewById(R.id.previous_assignment);
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
