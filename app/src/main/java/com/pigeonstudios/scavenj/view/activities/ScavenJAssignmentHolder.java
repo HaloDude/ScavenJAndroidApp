@@ -1,15 +1,15 @@
 package com.pigeonstudios.scavenj.view.activities;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
@@ -19,6 +19,7 @@ import com.pigeonstudios.scavenj.controller.fragmentcontroller.FragmentChangeCon
 public class ScavenJAssignmentHolder extends AppCompatActivity{
 
     private FragmentChangeController changeController;
+    private ViewPager pager;
 
     public ScavenJAssignmentHolder(){
 
@@ -35,19 +36,22 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //get the intent that brought us here and get the id value of a scavange that was passed to us
         Intent intent = getIntent();
-        int id = intent.getIntExtra("ID", 0);
-        this.changeController = new FragmentChangeController(id);
+        long id = intent.getLongExtra("ID", 0);
+        this.changeController = new FragmentChangeController(getSupportFragmentManager(), id);
+
+        this.pager = (ViewPager)findViewById(R.id.pager);
+        pager.setAdapter(changeController);
 
         final SeekBar progressBar = (SeekBar)findViewById(R.id.assignmentProgressBar);
-        progressBar.setClickable(false);
-        progressBar.setMax(changeController.getAssignmentAmount() - 1);
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        Fragment f = changeController.getCurrentFragment();
-        ft.add(R.id.assignment_fragment_placeholder, f, null);
-        ft.commit();
+        progressBar.setOnTouchListener(new View.OnTouchListener() { //disable touch recognition
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        progressBar.setMax(changeController.getCount() - 1);
 
         //get next button to switch to next fragment
         ImageButton next = (ImageButton)findViewById(R.id.next_assignment);
@@ -57,18 +61,8 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 if(changeController.switchToNextFragment()) {
-                    Fragment f = changeController.getCurrentFragment();
-                    if (f != null) {
-                        if (f.isAdded()) {
-                            ft.hide(changeController.getSwitchFragment());
-                            ft.show(f);
-                        } else {
-                            ft.hide(changeController.getSwitchFragment());
-                            ft.add(R.id.assignment_fragment_placeholder, f, null);
-                        }
-                        progressBar.setProgress(changeController.getCurrentFragmentNumber());
-                        ft.commit();
-                    }
+                    pager.setCurrentItem(changeController.getCurrentFragmentNumber());
+                    progressBar.setProgress(changeController.getCurrentFragmentNumber());
                 }
             }
         });
@@ -79,24 +73,21 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
             public void onClick(View v) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                if(changeController.switchToPrevFragment()) {
-                    Fragment f = changeController.getCurrentFragment();
-                    if (f != null) {
-                        if (f.isAdded()) {
-                            ft.hide(changeController.getSwitchFragment());
-                            ft.show(f);
-                        } else {
-                            ft.hide(changeController.getSwitchFragment());
-                            ft.add(R.id.assignment_fragment_placeholder, f, null);
-                        }
-                        progressBar.setProgress(changeController.getCurrentFragmentNumber());
-                        ft.commit();
-                    }
+                if (changeController.switchToPrevFragment()) {
+                    pager.setCurrentItem(changeController.getCurrentFragmentNumber());
+                    progressBar.setProgress(changeController.getCurrentFragmentNumber());
                 }
             }
         });
+
     }
 
+    /**
+     * This is a method that gives the activity an ability to have the back button pressed that is
+     * on the top right corner in the app bar
+     * @param item - the arrow thing on top right
+     * @return - I got no clue what it returns. Look in super class. It a bool so you got a 50/50 idk
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
