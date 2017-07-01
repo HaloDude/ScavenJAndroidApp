@@ -130,7 +130,7 @@ public class AvailableScavenJAdapter extends RecyclerView.Adapter<RecyclerView.V
             public void onClick(View v) {
                 Log.d("Click", String.valueOf(position));
                 Intent intent = new Intent(activity, ScavenJAssignmentHolder.class);
-                intent.putExtra("ID", position);
+                intent.putExtra("Position", position);
                 activity.startActivity(intent);
                 activity.overridePendingTransition(R.anim.slide_in, R.anim.hold);
             }

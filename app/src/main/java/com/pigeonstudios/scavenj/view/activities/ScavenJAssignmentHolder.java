@@ -38,8 +38,8 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
 
         //get the intent that brought us here and get the id value of a scavange that was passed to us
         Intent intent = getIntent();
-        long id = intent.getLongExtra("ID", 0);
-        this.changeController = new FragmentChangeController(getSupportFragmentManager(), id);
+        int position = intent.getIntExtra("Position", 0);
+        this.changeController = new FragmentChangeController(getSupportFragmentManager(), position);
 
         this.pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(changeController);

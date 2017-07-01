@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.pigeonstudios.scavenj.database.Database;
+import com.pigeonstudios.scavenj.model.assignments.Assignment;
+import com.pigeonstudios.scavenj.model.assignments.QAAssignment;
 import com.pigeonstudios.scavenj.view.fragments.assignments.PasswordFragment;
 import com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment;
 
@@ -26,22 +29,18 @@ import java.util.List;
  */
 public class FragmentChangeController extends FragmentPagerAdapter{
 
-    private List<Integer> assignments;
+    private List<Assignment> assignments;
 
-    private List<Fragment> fragments;
     private int amountOfFragments;
 
     private int currentFragment;
-    private int previousFragment;
 
-    public FragmentChangeController(FragmentManager fragmentManager, long id){
+    public FragmentChangeController(FragmentManager fragmentManager, int id){
         super(fragmentManager);
         assignments = new ArrayList<>();
 
-        fragments = new ArrayList<>();
         this.currentFragment = 0;
         this.amountOfFragments = 0;
-        this.previousFragment = 0;
 
         initialiseTheListOfAssignments(id);
     }
@@ -50,24 +49,8 @@ public class FragmentChangeController extends FragmentPagerAdapter{
      * This method will get the list of assignments from the database of a scavenger hunt with a specific id
      * @param idOfAssignmentList - id of the scavenger hunt assignment list that needs to be loaded
      */
-    private void initialiseTheListOfAssignments(long idOfAssignmentList){
-
-        //get the id of the assignment list that was passed.
-        if(idOfAssignmentList == 0){
-            assignments.add(2);
-            assignments.add(1);
-            assignments.add(2);
-            assignments.add(1);
-            assignments.add(2);
-            assignments.add(1);
-            assignments.add(2);
-            assignments.add(1);
-        } else {
-            assignments.add(2);
-            assignments.add(1);
-            assignments.add(2);
-            assignments.add(1);
-        }
+    private void initialiseTheListOfAssignments(int idOfAssignmentList){
+        assignments = Database.getListOfAssignments(idOfAssignmentList);
         amountOfFragments = assignments.size();
     }
 
@@ -123,9 +106,9 @@ public class FragmentChangeController extends FragmentPagerAdapter{
      */
     @Override
     public Fragment getItem(int position) {
-        switch(assignments.get(position)){
+        switch(assignments.get(position).getAssignmentIdentifier()){
             case 1:
-                return new QAFragment();
+                return QAFragment.newInstance(((QAAssignment)assignments.get(position)).getQuestion(), ((QAAssignment)assignments.get(position)).getAnswer());
             case 2:
                 return new PasswordFragment();
         }
