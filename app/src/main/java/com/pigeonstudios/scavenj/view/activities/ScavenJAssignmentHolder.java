@@ -10,16 +10,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import com.pigeonstudios.scavenj.R;
 import com.pigeonstudios.scavenj.controller.fragmentcontroller.FragmentChangeController;
+import com.pigeonstudios.scavenj.view.fragments.assignments.AssignmentFragment;
 
-public class ScavenJAssignmentHolder extends AppCompatActivity{
+public class ScavenJAssignmentHolder extends AppCompatActivity implements AssignmentFragment.onSubmitListener{
 
     private FragmentChangeController changeController;
     private ViewPager pager;
+    private SeekBar progressBar;
 
     public ScavenJAssignmentHolder(){
 
@@ -29,6 +32,8 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scavenj_assignment_holder);
+
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -43,8 +48,20 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
 
         this.pager = (ViewPager)findViewById(R.id.pager);
         pager.setAdapter(changeController);
+        //TODO implement on save instance state in the fragments
+        pager.setOffscreenPageLimit(100); // this will keep the fragments from being destroyed for now
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            @Override
+            public void onPageSelected(int position) {
+                progressBar.setProgress(position);
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
 
-        final SeekBar progressBar = (SeekBar)findViewById(R.id.assignmentProgressBar);
+        progressBar = (SeekBar)findViewById(R.id.assignmentProgressBar);
         progressBar.setOnTouchListener(new View.OnTouchListener() { //disable touch recognition
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -52,6 +69,7 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
             }
         });
         progressBar.setMax(changeController.getCount() - 1);
+
 
         //get next button to switch to next fragment
         ImageButton next = (ImageButton)findViewById(R.id.next_assignment);
@@ -103,4 +121,11 @@ public class ScavenJAssignmentHolder extends AppCompatActivity{
     }
 
 
+    @Override
+    public void onSubmitButtonPress() {
+        if(changeController.switchToNextFragment()) {
+            pager.setCurrentItem(changeController.getCurrentFragmentNumber());
+            progressBar.setProgress(changeController.getCurrentFragmentNumber());
+        }
+    }
 }

@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment">
+    tools:context="com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment"
+    android:focusableInTouchMode="true">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="281dp"
+        android:layout_weight="0.84"
+        app:cardElevation="12dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,72 +22,58 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Question"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textSize="30sp"
-                android:layout_marginTop="20dp"/>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.26" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/QAQuestion"
                 android:layout_width="match_parent"
-                android:layout_height="114dp"
-                android:maxHeight="120dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:text="Qestion Placeholderasfffffffffffffffffffffffffffffffffffffff"
-                android:layout_weight="0.03" />
+                android:layout_weight="0.87"
+                android:gravity="center"
+                android:maxHeight="120dp"
+                android:text="This is where the question will be displayed" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:srcCompat="@drawable/text_frame"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-    </RelativeLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0">
+        android:orientation="vertical"
+        android:layout_weight="0"
+        >
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="Enter answer here"
-            android:inputType="textPersonName" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/QAFragment_answer_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            app:cardElevation="12dp"
+            app:cardUseCompatPadding="true" >
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="84dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:adjustViewBounds="true"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:layout_weight="0"
-            app:srcCompat="@drawable/submit_answer_button" />
+            <EditText
+                android:id="@+id/QAFragment_answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:textAlignment="center"
+                android:inputType="textAutoComplete"
+                android:hint="ENTER ANSWER HERE"/>
+        </android.support.v7.widget.CardView>
 
+        <Button
+            android:id="@+id/QAFragment_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:elevation="15dp"
+            android:text="Submit Answer"
+            />
     </LinearLayout>
 
 </LinearLayout>

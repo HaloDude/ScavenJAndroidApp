@@ -39,7 +39,8 @@
 
         <activity
             android:name=".view.activities.ScavenJAssignmentHolder"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 
 
         </activity>
