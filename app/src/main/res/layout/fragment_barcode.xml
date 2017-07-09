@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/barcode_fragment_top_layout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/barcode_fragment_start_cam_button"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="Button" />
+
+    <com.pigeonstudios.scavenj.controller.barcodereader.CameraSourcePreview
+        android:id="@+id/barcode_fragment_cam_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pigeonstudios.scavenj.controller.barcodereader.GraphicOverlay
+            android:id="@+id/barcode_fragment_cam_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.pigeonstudios.scavenj.controller.barcodereader.CameraSourcePreview>
+
+</LinearLayout>

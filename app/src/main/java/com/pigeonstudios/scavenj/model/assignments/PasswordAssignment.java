@@ -7,8 +7,8 @@ public class PasswordAssignment extends Assignment {
     private String question;
     private String answer;
 
-    public PasswordAssignment(int assignmentIdentifier) {
-        super(assignmentIdentifier);
+    public PasswordAssignment(int assignmentType) {
+        super(assignmentType);
     }
 
     public String getQuestion() {

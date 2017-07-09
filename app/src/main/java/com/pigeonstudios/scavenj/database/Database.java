@@ -1,6 +1,7 @@
 package com.pigeonstudios.scavenj.database;
 
 import com.pigeonstudios.scavenj.model.assignments.Assignment;
+import com.pigeonstudios.scavenj.model.assignments.BarcodeAssignment;
 import com.pigeonstudios.scavenj.model.assignments.QAAssignment;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public abstract class Database {
 
         //use the id to get the appropriate list from the database
         if(scavenJPositionOnScreen == 0){
-            a.add(new QAAssignment(1, "How old am I?", "21"));
+            a.add(new BarcodeAssignment(3));
         } else if(scavenJPositionOnScreen == 5){
             a.add(new QAAssignment(1, "How old am I?", "21"));
             a.add(new QAAssignment(1, "Who Am I?", "Dennis"));

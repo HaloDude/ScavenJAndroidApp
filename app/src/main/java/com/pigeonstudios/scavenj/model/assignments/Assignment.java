@@ -8,13 +8,24 @@ public abstract class Assignment {
     /**
      * A variable which will tell us what kind of assignment it is
      */
-    private int assignmentIdentifier;
+    private int assignmentType;
+    private boolean answered;
 
-    public Assignment(int assignmentIdentifier){
-        this.assignmentIdentifier = assignmentIdentifier;
+    public Assignment(int assignmentType){
+        this.assignmentType = assignmentType;
+        this.answered = false;
     }
 
     public int getAssignmentIdentifier(){
-        return assignmentIdentifier;
+        return assignmentType;
     }
+
+    public boolean isAnswered(){
+        return answered;
+    }
+
+    public void setAnswered(boolean answered){
+        this.answered = answered;
+    }
+
 }

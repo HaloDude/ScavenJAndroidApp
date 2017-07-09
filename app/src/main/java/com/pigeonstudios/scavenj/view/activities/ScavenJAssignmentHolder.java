@@ -1,6 +1,7 @@
 package com.pigeonstudios.scavenj.view.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -10,19 +11,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.pigeonstudios.scavenj.R;
+import com.pigeonstudios.scavenj.controller.fragmentcontroller.CustomViewPager;
 import com.pigeonstudios.scavenj.controller.fragmentcontroller.FragmentChangeController;
 import com.pigeonstudios.scavenj.view.fragments.assignments.AssignmentFragment;
 
-public class ScavenJAssignmentHolder extends AppCompatActivity implements AssignmentFragment.onSubmitListener{
+public class ScavenJAssignmentHolder extends AppCompatActivity implements AssignmentFragment.OnFragmentInteractionListener{
 
     private FragmentChangeController changeController;
-    private ViewPager pager;
+    private CustomViewPager pager;
     private SeekBar progressBar;
+    private Toast toast;
 
     public ScavenJAssignmentHolder(){
 
@@ -33,20 +36,23 @@ public class ScavenJAssignmentHolder extends AppCompatActivity implements Assign
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scavenj_assignment_holder);
 
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        setUpPager();
+
+    }
+
+
+    private void setUpPager(){
         //get the intent that brought us here and get the id value of a scavange that was passed to us
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         int position = intent.getIntExtra("Position", 0);
         this.changeController = new FragmentChangeController(getSupportFragmentManager(), position);
-
-        this.pager = (ViewPager)findViewById(R.id.pager);
+        this.pager = (CustomViewPager) findViewById(R.id.pager);
         pager.setAdapter(changeController);
         //TODO implement on save instance state in the fragments
         pager.setOffscreenPageLimit(100); // this will keep the fragments from being destroyed for now
@@ -60,6 +66,7 @@ public class ScavenJAssignmentHolder extends AppCompatActivity implements Assign
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
 
         progressBar = (SeekBar)findViewById(R.id.assignmentProgressBar);
         progressBar.setOnTouchListener(new View.OnTouchListener() { //disable touch recognition
@@ -81,6 +88,14 @@ public class ScavenJAssignmentHolder extends AppCompatActivity implements Assign
                 if(changeController.switchToNextFragment()) {
                     pager.setCurrentItem(changeController.getCurrentFragmentNumber());
                     progressBar.setProgress(changeController.getCurrentFragmentNumber());
+                } else {
+                    if(changeController.getCurrentFragmentNumber() != changeController.getCount()-1){
+                        if(toast != null){
+                            toast.cancel();
+                        }
+                        toast = Toast.makeText(ScavenJAssignmentHolder.this, "Answer the question to proceed", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
             }
         });
@@ -97,7 +112,6 @@ public class ScavenJAssignmentHolder extends AppCompatActivity implements Assign
                 }
             }
         });
-
     }
 
     /**
@@ -122,10 +136,21 @@ public class ScavenJAssignmentHolder extends AppCompatActivity implements Assign
 
 
     @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
     public void onSubmitButtonPress() {
         if(changeController.switchToNextFragment()) {
             pager.setCurrentItem(changeController.getCurrentFragmentNumber());
             progressBar.setProgress(changeController.getCurrentFragmentNumber());
         }
     }
+
+    @Override
+    public void onAnswered() {
+        changeController.setAnsweredToCurrentFragment();
+    }
+
 }

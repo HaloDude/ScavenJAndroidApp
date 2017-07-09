@@ -18,11 +18,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pigeonstudios.scavenj.R;
+import com.pigeonstudios.scavenj.controller.fragmentcontroller.FragmentChangeController;
 import com.pigeonstudios.scavenj.view.activities.ScavenJAssignmentHolder;
 
 /**
@@ -102,14 +104,16 @@ public class QAFragment extends AssignmentFragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 try{
-
                     String s = answer.getText().toString();
-
                     if(s.equals(mAnswer)){ //if the answer is correct
                         answer.setEnabled(false);
                         submit.setEnabled(false);
                         answer.getBackground().clearColorFilter();
+                        ((ScavenJAssignmentHolder) getActivity()).onAnswered();
                         ((ScavenJAssignmentHolder) getActivity()).onSubmitButtonPress();
                     } else { //if the answer is not correct
                         answer.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -155,23 +159,14 @@ public class QAFragment extends AssignmentFragment {
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        this.context = context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+            this.context = context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
 
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     //TODO implement this for fragment destroy and create
