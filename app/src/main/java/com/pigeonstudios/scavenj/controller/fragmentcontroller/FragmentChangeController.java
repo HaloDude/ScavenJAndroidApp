@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.pigeonstudios.scavenj.database.Database;
 import com.pigeonstudios.scavenj.model.assignments.Assignment;
 import com.pigeonstudios.scavenj.model.assignments.QAAssignment;
+import com.pigeonstudios.scavenj.view.fragments.assignments.BarcodeFragment;
 import com.pigeonstudios.scavenj.view.fragments.assignments.PasswordFragment;
 import com.pigeonstudios.scavenj.view.fragments.assignments.QAFragment;
 
@@ -62,7 +63,9 @@ public class FragmentChangeController extends FragmentPagerAdapter{
      * @return - true if switch is possible, false if not possible
      */
     public boolean switchToNextFragment(){
-        if(currentFragment < amountOfFragments-1){
+        //if there are more fragments in the list
+        if(currentFragment < amountOfFragments-1 && assignments.get(currentFragment).isAnswered()){
+            //check if switch is possible
             currentFragment++;
             return true;
         }
@@ -89,6 +92,10 @@ public class FragmentChangeController extends FragmentPagerAdapter{
         return false;
     }
 
+    public void setAnsweredToCurrentFragment(){
+        assignments.get(currentFragment).setAnswered(true);
+    }
+
     /**
      * Returns the current fragment position in the list.
      * @return - current fragment position
@@ -106,12 +113,16 @@ public class FragmentChangeController extends FragmentPagerAdapter{
      */
     @Override
     public Fragment getItem(int position) {
-        switch(assignments.get(position).getAssignmentIdentifier()){
-            case 1:
-                return QAFragment.newInstance(((QAAssignment)assignments.get(position)).getQuestion(), ((QAAssignment)assignments.get(position)).getAnswer());
-            case 2:
-                return new PasswordFragment();
-        }
+
+            switch (assignments.get(position).getAssignmentIdentifier()) {
+                case 1:
+                    return QAFragment.newInstance(((QAAssignment) assignments.get(position)).getQuestion(), ((QAAssignment) assignments.get(position)).getAnswer());
+                case 2:
+                    return new PasswordFragment();
+                case 3:
+                    return new BarcodeFragment();
+            }
+
         return null;
     }
 
