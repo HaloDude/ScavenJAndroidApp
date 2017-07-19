@@ -140,7 +140,7 @@ public class BarcodeFragment extends AssignmentFragment{
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
-            createCameraSource(autoFocus, useFlash);
+            //createCameraSource(autoFocus, useFlash)
         } else {
             requestCameraPermission();
         }
@@ -184,10 +184,13 @@ public class BarcodeFragment extends AssignmentFragment{
         };
 
         this.view.findViewById(R.id.barcode_fragment_top_layout).setOnClickListener(listener);
-        Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.ok, listener)
-                .show();
+
+//        Snackbar.make(view.findViewById(R.id.barcode_fragment_top_layout), R.string.permission_camera_rationale,
+//                Snackbar.LENGTH_INDEFINITE)
+//                .setAction(R.string.ok, listener)
+//                .show();
+        ActivityCompat.requestPermissions(thisActivity, permissions,
+                RC_HANDLE_CAMERA_PERM);
     }
 
     /**
@@ -236,11 +239,14 @@ public class BarcodeFragment extends AssignmentFragment{
         // Creates and starts the camera.  Note that this uses a higher resolution in comparison
         // to other detection examples to enable the barcode detector to detect small barcodes
         // at long distances.
+
+
         CameraSource.Builder builder = new CameraSource.Builder(context, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setAutoFocusEnabled(autoFocus)
-                .setRequestedPreviewSize(1600, 1024)
+                .setRequestedPreviewSize(mPreview.getWidth(), mPreview.getHeight())
                 .setRequestedFps(15.0f);
+        mCameraSource = builder.build();
 
 
     }
@@ -322,7 +328,7 @@ public class BarcodeFragment extends AssignmentFragment{
             // we have permission, so create the camerasource
             boolean autoFocus = true;
             boolean useFlash = false;
-            createCameraSource(autoFocus, useFlash);
+            //createCameraSource(autoFocus, useFlash);
             return;
         }
 

@@ -131,8 +131,8 @@ public class CameraSourcePreview extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        int width = 320;
-        int height = 240;
+        int width = right - left;
+        int height = bottom - top;
         if (mCameraSource != null) {
             Size size = mCameraSource.getPreviewSize();
             if (size != null) {
@@ -154,13 +154,15 @@ public class CameraSourcePreview extends ViewGroup {
 
         // Computes height and width for potentially doing fit width.
         int childWidth = layoutWidth;
-        int childHeight = (int)(((float) layoutWidth / (float) width) * height);
+        //int childHeight = (int)(((float) layoutWidth / (float) width) * height);
+        int childHeight = layoutHeight;
 
-        // If height is too tall using fit width, does fit height instead.
-        if (childHeight > layoutHeight) {
-            childHeight = layoutHeight;
-            childWidth = (int)(((float) layoutHeight / (float) height) * width);
-        }
+//        // If height is too tall using fit width, does fit height instead.
+//        if (childHeight > layoutHeight) {
+//            childHeight = layoutHeight;
+//            childWidth = (int)(((float) layoutHeight / (float) height) * width);
+//            childWidth = layoutWidth;
+//        }
 
         for (int i = 0; i < getChildCount(); ++i) {
             getChildAt(i).layout(0, 0, childWidth, childHeight);
